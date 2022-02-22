@@ -1,7 +1,22 @@
+const mongoose = require("mongoose");
 
-const mongoose = require('mongoose')
-mongoose.connect(process.env.MONGODB_URI_LOCAL, {useFindAndModify: false, useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
-    .then(() => console.log('Connected to the Database'))
-    .catch(() => console.log('Database connection problem'));
-    
+function ConnecDB() {
+  return new Promise((resolve, reject) => {
+    mongoose
+      .connect(process.env.MONGODB_URI_ONLINE, {
+        useFindAndModify: false,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+      })
+      .then(() => {
+        resolve('Connected to the Database');
+      })
+      .catch(() => {
+        reject('Database connection error');
+      });
+  });
+}
 
+
+module.exports = ConnecDB
