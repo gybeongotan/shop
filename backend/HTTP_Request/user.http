@@ -1,0 +1,40 @@
+
+POST http://localhost:8000/api/user/registration
+Content-Type: application/json
+
+{   
+    "username": "us2er0112",
+    "password": "Abc12345",
+    "firstname": "juan",
+    "lastname": "Dela Cruz",
+    "address": "juan@email.com",
+    "contact": "099933201456"
+
+}
+
+###
+POST http://localhost:8000/api/user/login
+Content-Type: application/json
+
+{
+  "username": "us2er0112",
+  "password": "Abc12345"
+}
+
+###
+GET http://localhost:8000/api/user/information 
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTEzNWZmNjEwYzdjMzI2ZGZiYzc3NWYiLCJkZXZpY2UiOiJ2c2NvZGUtcmVzdGNsaWVudCIsImlhdCI6MTYzOTgyODExMX0.nEKcxb2DtH5iKWnN2r0nwmOxqpuJFrjcO2S2Af0XQ3w
+
+
+###
+PATCH http://localhost:8000/api/user/information 
+Authorization: Bearerey eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRGF0YSI6eyJfaWQiOiI2MTEyMmYzMzg4ZTQ4ZDhkZjVlOWQ4OWEiLCJwYXNzd29yZCI6IiQyYSQxMCRidk5EUnBrNXlIeXh5bFZFS2I1V0RPcTI1dThOblV3ejVOajJOM2tSMk5CVVhKbnNRREw2ZSIsInNob3AiOiI2MTEyMmYzMzg4ZTQ4ZDhkZjVlOWQ4OWIifSwiZGV2aWNlIjoidnNjb2RlLXJlc3RjbGllbnQiLCJpYXQiOjE2Mjg2MDM4NDl9.Ydfk450GWI4U_2oJ8MFCe4CAWiTvWqgJQp6bXCyFwsE
+Content-Type: application/json
+
+{    
+    "firstname":"a"
+}
+
+###
+GET http://localhost:8000/api/user/feed
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRGF0YSI6eyJmb2xsb3dlZF9zaG9wcyI6W10sImluYm94IjpbXSwicHJvZmlsZUlNRyI6Imh0dHA6Ly9zbmFwLnNoby9zYW4uanBnIiwib3JkZXJzIjpbXSwiX2lkIjoiNjExMWMxOTcwYjllZDUxNWYzMjM0N2IxIiwidXNlcm5hbWUiOiJ1czJlcjAxMTIiLCJwYXNzd29yZCI6IiQyYSQxMCRSNjI4TU9DTFlydURoVGlGV2kzQ3p1WU1YODBIeW5TOTZtNFpTZ3FuSjhHU2w4dlI5UEdBaSIsImZpcnN0bmFtZSI6Imp1YW4iLCJsYXN0bmFtZSI6IkRlbGEgQ3J1eiIsImFkZHJlc3MiOiJqdWFuQGVtYWlsLmNvbSIsImNvbnRhY3QiOiIwOTk5MzMyMTQ1NiIsInNob3AiOiI2MTExYzE5NzBiOWVkNTE1ZjMyMzQ3YjIiLCJjcmVhdGVkQXQiOiIyMDIxLTA4LTEwVDAwOjAwOjIzLjY1OFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTA4LTEwVDAwOjAwOjIzLjY1OFoifSwiZGV2aWNlIjoidnNjb2RlLXJlc3RjbGllbnQiLCJpYXQiOjE2Mjg1NjUyNTB9.WDHP5zO0dkTHEAt2AupK03Lx6dqD4jx25AofUi9AXJ8
