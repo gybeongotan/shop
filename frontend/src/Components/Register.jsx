@@ -17,7 +17,7 @@ function Register() {
   let submit = useRef(null)
   let [error, setError] = useState('')
   const [step, changeStep] = useState(1)
-  let history = useNavigate()
+  let navigate = useNavigate()
 
   let register = function (e) {
     e.preventDefault()
@@ -43,7 +43,9 @@ function Register() {
       .then(() => {
         submit.current.innerText = 'Succesful'
         submit.current.style = 'color: white;background: green'
-        setTimeout(function () {}, 3000)
+        setTimeout(function () {
+          navigate('/login')
+        }, 3000)
       })
       .catch(({ response }) => {
         submit.current.style = `
