@@ -1,10 +1,13 @@
-import React from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
-import getCookie from '../tools/getCookie'
+import React, { useContext } from "react";
+import { UserContext } from "../Components/UserContext";
+import { Navigate, Outlet } from "react-router-dom";
 
-const PublicRoute = () => {
-  let accessToken = getCookie('accessToken')
-  return accessToken ? <Navigate to="/home" /> : <Outlet />
-}
+const PublicRoute = () => { 
+  let {userData} = useContext(UserContext);
+  return  userData ? <Navigate to='/profile'/>:(
+    <div className="main">
+      <Outlet />
+    </div> )
+};
 
-export default PublicRoute
+export default PublicRoute;

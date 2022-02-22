@@ -15,12 +15,12 @@ router.post('/registration', (req, res) => {
 
 router.post('/login', async ({ patch }, res) => {
   db.login(patch)
-    .then(({ accessToken }) => {
+    .then(({ accessToken ,userData}) => {
       res.cookie('accessToken', accessToken, {
         sameSite: 'none',
         secure: true,
       })
-      res.sendStatus(200)
+      res.status(200).send(userData)
     })
     .catch((error) => {
       res.status(500).send(error)
@@ -55,6 +55,15 @@ router.get('/feed', async (req, res) => {
     .catch((error) => {
       res.status(500).send(error)
     })
+})
+
+router.get('/logout',(req,res)=>{
+  res.cookie('accessToken', {data: 'deleted'} ,{
+    sameSite: 'none',
+    secure: true,
+    maxAge: -10 //10days
+  } )
+   res.sendStatus(200)
 })
 
 module.exports = router

@@ -1,8 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import validator from '../tools/validator'
 import Api from './Api'
+import { UserContext } from './UserContext'
 
 let EditProfile = function () {
+  let navigate = useNavigate();
+  let {userData,updateUserData} = useContext(UserContext)
+  let {profileIMG,contact,address} = userData
   let style = {
     img: {
       marginBottom: '10px',
@@ -33,40 +38,15 @@ let EditProfile = function () {
       fontSize: '1.3rem',
       marginTop: '6rem',
     },
-  }
-  let [profileIMG, setProfileIMG] = useState(''),
-    [fullname, setFullname] = useState(''),
-    [firstname, setFirstname] = useState(''),
-    [lastname, setLastname] = useState(''),
-    [contact, setContact] = useState(''),
-    [address, setAddress] = useState(''),
-    [isLoading, setLoading] = useState(true)
-
-  useEffect(() => {
-    Api.get('/user/information', { withCredentials: true })
-      .then(({ data }) => {
-        setProfileIMG(data.profileIMG)
-        setFirstname(data.firstname)
-        setLastname(data.lastname)
-        setFullname(data.firstname + ' ' + data.lastname)
-        setContact(data.contact)
-        setAddress(data.address)
-        setLoading(false)
-      })
-      .catch((error) => {
-        console.trace(error)
-      })
-  }, [])
+  } 
+ 
 
   let updateIMG = ({ target }) => {
     if (target.value == '')
       return (document.querySelector('img').src = profileIMG)
     document.querySelector('img').src = target.value
   }
-
-  let successHandler = () => {
-    window.location.pathname = '/profile'
-  }
+ 
   let errorHandler = ({ response }) => {
     if (response.data.keyPattern.contact) {
       let contact = document.forms[0].contact
@@ -87,14 +67,7 @@ let EditProfile = function () {
       contact: formData.contact.value,
       address: formData.address.value,
     }
-
-    let detect = {
-      contact: {
-        old: contact,
-        new: patch.contact,
-        same: contact === patch.contact,
-      },
-    }
+  
     if (contact === patch.contact || patch.contact === '') delete patch.contact
     if (profileIMG === patch.profileIMG || patch.profileIMG === '')
       delete patch.profileIMG
@@ -104,7 +77,14 @@ let EditProfile = function () {
     Api.patch('/user/information', patch, {
       withCredentials: true,
     })
-      .then(successHandler)
+      .then(()=>{
+        let entries=Object.entries(patch);
+        entries.forEach(([index,value])=>{
+          userData[index]=value;
+        })
+        updateUserData(userData)
+        navigate('/profile')
+      })
       .catch(errorHandler)
   }
 

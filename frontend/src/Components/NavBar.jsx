@@ -4,9 +4,11 @@ import HomeIcon from "../assets/icons/Home.ico";
 import ProfileIcon from "../assets/icons/Profile.ico";
 import MsgsIcon from "../assets/icons/Msgs.ico";
 import OrdersIcon from "../assets/icons/Orders.ico";
+import { BrowserRouter as Router } from "react-router-dom";
 const NavBar = () => {
   return (
-    <div className="navBar">
+    <div className="navBar"> 
+        
       <Link to="/orders">
         <OrdersIcon path="/orders" colorA="blue" colorB="black" />
       </Link>
@@ -21,7 +23,7 @@ const NavBar = () => {
       </Link>
       <Link to="/profile">
         <ProfileIcon path="/profile" colorA="blue" colorB="black" />
-      </Link>
+      </Link> 
     </div>
   );
 };

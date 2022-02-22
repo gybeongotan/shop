@@ -24,8 +24,7 @@ function register(userData) {
 
 function login({ username, password, device }) {
   return new Promise((resolve, reject) => {
-    Users.findOne({ $or: [{ username }, { email: username }] })
-      .select('_id shop password')
+    Users.findOne({ $or: [{ username }, { email: username }] }) 
       .then((userData) => {
         if (!userData) reject({ error: 'Invalid Credentials' })
         Users.comparePassword(password, userData.password, (matched) => {
@@ -33,8 +32,10 @@ function login({ username, password, device }) {
           const accessToken = jwt.sign(
             { userId: userData._id, device, shop: userData.shop },
             tokenSigningKey,
-          )
-          resolve({ accessToken })
+          ) 
+          let {firstname, lastname,contact,address,profileIMG}  = userData;
+          userData = {firstname, lastname,contact,address,profileIMG} 
+          resolve({ accessToken , userData})
         })
       })
       .catch(reject)
