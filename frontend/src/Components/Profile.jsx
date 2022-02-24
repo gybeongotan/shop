@@ -50,7 +50,8 @@ function Profile() {
   };
 
   const errorHandler = (e) => {
-    if (e.response) setErrorMsg(e.response.data.message);
+    console.log(e.response.data);
+    if (typeof e.response == "object") setErrorMsg(e.response.data.message);
     else setErrorMsg(e.message);
     setLoading(false);
   };
@@ -73,13 +74,11 @@ function Profile() {
       delete patch.address;
     if (Object.entries(patch).length == 0) {
       setLoading(false);
-      setOpen(false);
+      handleClose();
       return;
     }
 
-    Api.patch("/user/information", patch, {
-      withCredentials: true,
-    })
+    Api.patch("/user/information", patch)
       .then(() => {
         let entries = Object.entries(patch);
         entries.forEach(([index, value]) => {
@@ -122,15 +121,21 @@ function Profile() {
         }}
       >
         <Avatar
-          sx={{ width: "10rem", height: "10rem" }}
+          sx={{ width: "12.1rem", height: "12rem" }}
           src={userData.profileIMG}
         ></Avatar>
-        <h2 style={{ textTransform: "capitalize", marginBottom: "0px" }}>
+        <h2
+          style={{
+            marginTop: "4rem",
+            textTransform: "capitalize",
+            marginBottom: "0px",
+          }}
+        >
           {userData.firstname + " " + userData.lastname}
         </h2>
         <p style={{ marginTop: "5px" }}>{userData.contact}</p>
         <p className="address">{userData.address}</p>
-        <Button variant="contained" onClick={handleClickOpen}>
+        <Button style={{marginTop: '2rem'}}variant="contained" onClick={handleClickOpen}>
           Edit Info
         </Button>
         <Link style={{ textDecoration: "none" }} to="/logout">
@@ -153,7 +158,10 @@ function Profile() {
               aria-label="close"
             >
               <CloseIcon />
-            </IconButton> 
+            </IconButton>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+              Edit
+            </Typography>
             <Fade
               in={loading}
               style={{
@@ -168,6 +176,7 @@ function Profile() {
               />
             </Fade>
             <Button
+              fontSize="large"
               autoFocus
               color="inherit"
               onClick={() => submitBtn.current.click()}

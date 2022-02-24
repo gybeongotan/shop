@@ -15,12 +15,8 @@ router.post('/registration', (req, res) => {
 
 router.post('/login', async ({ patch }, res) => {
   db.login(patch)
-    .then(({ accessToken ,userData}) => {
-      res.cookie('accessToken', accessToken, {
-        sameSite: 'none',
-        secure: true,
-      })
-      res.status(200).send(userData)
+    .then(({ accessToken ,userData}) => { 
+      res.status(200).send({userData,accessToken})
     })
     .catch((error) => {
       res.status(500).send(error)

@@ -13,7 +13,7 @@ const HOSTNAME = process.env.HOSTNAME;
 
 App.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://shop.localhost:3000",
     credentials: true,
   })
 );
