@@ -8,7 +8,6 @@ import StoreIcon from '@mui/icons-material/Store';
 import PublicIcon from '@mui/icons-material/Public';
 import { Paper } from '@mui/material'; 
 export default function LabelBottomNavigation({changePathTo} ) { 
-  console.log(changePathTo)
   const [value, setValue] = React.useState('recents'); 
   const handleChange = function (event, newValue)  {
     setValue(newValue); 
@@ -21,27 +20,32 @@ export default function LabelBottomNavigation({changePathTo} ) {
       <BottomNavigationAction
         label="Orders"
         value="/orders"
-        icon={<InventoryIcon />}
+        icon={<InventoryIcon  
+          fontSize='medium'/>}
       /> 
        <BottomNavigationAction
         label="Shop"
         value="/shop"
-        icon={<StoreIcon />}
+        icon={<StoreIcon 
+        fontSize='medium'/>}
       /> 
       <BottomNavigationAction
         label="Feed"
         value="/home"
-        icon={<PublicIcon />}
+        icon={<PublicIcon 
+        fontSize='medium'/>}
       /> 
       <BottomNavigationAction
         label="Chat"
         value="/msgs"
-        icon={<ChatBubbleIcon />}
+        icon={<ChatBubbleIcon 
+        fontSize='medium'/>}
       /> 
       <BottomNavigationAction
         label="Account"
         value="/profile"
-        icon={<AccountBoxIcon />}
+        icon={<AccountBoxIcon 
+        fontSize='medium'/>}
       />
     </BottomNavigation>
       </Paper>

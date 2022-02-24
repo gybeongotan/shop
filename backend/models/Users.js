@@ -35,7 +35,13 @@ const userSchema = mongoose.Schema(
       maxLength: 14,
       validate: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,30}$/,
     },
-    contact: { type: String, required: true, unique: true, length: 13 },
+    contact: { type: String, required: true, unique: true,
+      validate: {
+        validator: function(v) {
+          return /^((\+63)([0-9]{10}))$/.test(v);
+        },
+        message: props => `Please follow this format +639*********.`
+      }},
     address: { type: String, required: true, minLength: 10 },
     shop: {
       immutable: true,
@@ -65,7 +71,8 @@ userSchema.pre('save', async function (next) {
 })
 userSchema.pre('updateOne', async function (next) {
   let update = this.getUpdate()
-  if (update.password) update.password = await hashedPassword(update.password)
+  this.options.runValidators = true
+    if (update.password) update.password = await hashedPassword(update.password)
   this.setUpdate(update)
   next()
 })

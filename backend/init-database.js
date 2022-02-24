@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 function ConnecDB() {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.MONGODB_URI_ONLINE, {
+      .connect(process.env.MONGODB_URI_LOCAL, {
         useFindAndModify: false,
         useNewUrlParser: true,
         useUnifiedTopology: true,
