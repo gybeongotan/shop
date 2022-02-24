@@ -1,6 +1,10 @@
-let profileIco = ({ path, colorA, colorB }) => {
+import {matchPath} from 'react-router-dom'
+
+
+let profileIco = ({ path, colorA, colorB }) => {    
   let currentPath = document.location.pathname; 
- return (
+  console.log(matchPath(currentPath,path))
+  return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height="24px"

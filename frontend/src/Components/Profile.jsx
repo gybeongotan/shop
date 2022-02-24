@@ -1,6 +1,8 @@
+import { AppBar, Avatar, Box, Button, Container, Typography } from '@mui/material';
 import { useEffect, useState, useContext } from 'react'
-import { Router, Routes, Route, Link, Navigate,useNavigate } from 'react-router-dom'
-import { UserContext } from './UserContext'
+import { Link,useNavigate } from 'react-router-dom'
+import { UserContext } from './UserContext' 
+
 function Profile() { 
 
   let [mounted,setMounted] = useState(false);
@@ -12,23 +14,28 @@ function Profile() {
   },[])
   
   return mounted ? (
-    <div className="profile">
-      <header>
-        <h1>Profile</h1>
-      </header>
-      <main>
-        <img src={userData.profileIMG}></img>
-        <h2 className="fullname">
+    <Box cx={{width: '100%'}} >
+      <AppBar sx={{padding:'10px',background:'white',color:'black',position: 'static'}}> 
+          <Typography variant="h6" color="inherit" component="div">
+            Profile
+          </Typography>
+      </AppBar>
+      <Box sx={{display:'flex',justifyContent: 'center',alignItems:'center',flexDirection:'column', padding: '10vw'}}>
+        <Avatar sx={{width: '10rem',height: '10rem' }} src={userData.profileIMG}></Avatar>
+        <h2 style={{textTransform: 'capitalize',marginBottom: '0px'}}  >
           {userData.firstname + ' ' + userData.lastname}
         </h2>
-        <p className="contact">{userData.contact}</p>
+        <p style={{marginTop:'5px'}}>{userData.contact}</p>
         <p className="address">{userData.address}</p>
-        <Link to="/editProfile">
-          <button>Edit Info</button>
+        <Link to="/editProfile" style={{textDecoration: 'none',marginTop:'1.2rem'}}>
+          <Button variant='contained'>Edit Info</Button>
         </Link>
-        <Link to='/logout'>Log-out</Link>
-      </main>
-    </div>
+        <Link style={{textDecoration: 'none'}} to='/logout'>
+        <Button variant='text'>Log-out</Button>
+          
+        </Link>
+      </Box >
+    </Box>
   ) : <h1>noding</h1>
 }
 

@@ -1,31 +1,50 @@
-import { Link } from "react-router-dom";
-import ShopIcon from "../assets/icons/Shop.ico";
-import HomeIcon from "../assets/icons/Home.ico";
-import ProfileIcon from "../assets/icons/Profile.ico";
-import MsgsIcon from "../assets/icons/Msgs.ico";
-import OrdersIcon from "../assets/icons/Orders.ico";
-import { BrowserRouter as Router } from "react-router-dom";
-const NavBar = () => {
-  return (
-    <div className="navBar"> 
-        
-      <Link to="/orders">
-        <OrdersIcon path="/orders" colorA="blue" colorB="black" />
-      </Link>
-      <Link to="/shop">
-        <ShopIcon path="/shop" colorA="blue" colorB="black" />
-      </Link>
-      <Link to="/home">
-        <HomeIcon path="/home" colorA="blue" colorB="black" />
-      </Link>
-      <Link to="/msgs">
-        <MsgsIcon path="/msgs" colorA="blue" colorB="black" />
-      </Link>
-      <Link to="/profile">
-        <ProfileIcon path="/profile" colorA="blue" colorB="black" />
-      </Link> 
-    </div>
-  );
-};
+import * as React from 'react';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import StoreIcon from '@mui/icons-material/Store';
+import PublicIcon from '@mui/icons-material/Public';
+import { Paper } from '@mui/material'; 
+export default function LabelBottomNavigation({changePathTo} ) { 
+  console.log(changePathTo)
+  const [value, setValue] = React.useState('recents'); 
+  const handleChange = function (event, newValue)  {
+    setValue(newValue); 
+    changePathTo(newValue)
+  };
 
-export default NavBar;
+  return (
+    <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+    <BottomNavigation  sx={{width: "90%",margin:"auto"}} value={value} onChange={handleChange}> 
+      <BottomNavigationAction
+        label="Orders"
+        value="/orders"
+        icon={<InventoryIcon />}
+      /> 
+       <BottomNavigationAction
+        label="Shop"
+        value="/shop"
+        icon={<StoreIcon />}
+      /> 
+      <BottomNavigationAction
+        label="Feed"
+        value="/home"
+        icon={<PublicIcon />}
+      /> 
+      <BottomNavigationAction
+        label="Chat"
+        value="/msgs"
+        icon={<ChatBubbleIcon />}
+      /> 
+      <BottomNavigationAction
+        label="Account"
+        value="/profile"
+        icon={<AccountBoxIcon />}
+      />
+    </BottomNavigation>
+      </Paper>
+
+  );
+}

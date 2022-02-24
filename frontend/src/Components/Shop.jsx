@@ -1,6 +1,7 @@
 import Gallery from './Gallery'
 import Api from './Api'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 const Shop = () => {
   let [isLoading, setLoading] = useState(true),
     [shopName, setShopName] = useState(''),
@@ -36,7 +37,8 @@ const Shop = () => {
           <div className="nav">
             <a href="#">Orders</a>&nbsp;|&nbsp;
             <a href="#">&nbsp;Products&nbsp;</a>&nbsp;|&nbsp;
-            <a href="#">Contacts</a>&nbsp;|&nbsp;<a href="#"> Edit Info </a>
+            <a href="#">Contacts</a>&nbsp;|&nbsp;
+            <Link to='/editShop'>Edit Info</Link> 
           </div>
         </div>
         {gallery ? <Gallery images={gallery} /> : 'not yet'}

@@ -115,9 +115,7 @@ body {
   }
   > div {
     height: 100%;
-    width: 100%;
-    display: grid;
-    grid-template-rows: 3rem auto;
+    width: 100%; 
     overflow: hidden;
   }
   .profile {
