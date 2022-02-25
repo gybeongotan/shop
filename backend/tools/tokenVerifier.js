@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const tokenSigningKey = process.env.TOKEN_SIGNING_KEY;
 const mongoose = require('mongoose')
-const regex = /^Bearer [\w-]\.[\w-]+\.[\w-]+$/
+const regex = /^Bearer [\w-]+\.[\w-]+\.[\w-]+$/
 module.exports = function(req,res,next){
   let authorization = req.get('authorization'); 
   if (!regex.test(authorization))  return res.status(500).send({error: 'Invalid Token'}) 
