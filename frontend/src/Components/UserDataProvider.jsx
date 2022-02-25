@@ -12,6 +12,7 @@ function UserData() {
         setFetched(true);
       })
       .catch((err) => {
+        console.log({err})
         setFetched(true);
         setUserData(null);
       });

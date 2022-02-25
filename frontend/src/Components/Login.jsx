@@ -23,7 +23,7 @@ function Login() {
     })
       .then((res) => {
         updateUserData(res.data.userData);
-        localStorage.accessToken = res.data.accessToken;
+        localStorage.setItem('accessToken', res.data.accessToken)
       })
       .catch((e) => {
         alert("Invalid username or password");
