@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import Api from "./Api";
-import { Navigate, useNavigate } from "react-router-dom";
-import SubmitBtn from "./SubmitBtn";
-import Logo from "./Logo";
+import { Navigate, useNavigate } from "react-router-dom"; 
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import { Avatar, Box, TextField, Container, Button } from "@mui/material";
@@ -64,7 +62,6 @@ function Login() {
           name="username"
           label="Username"
           type="text"
-          fullWidth
           variant="outlined"
           required
         />
@@ -73,7 +70,6 @@ function Login() {
           name="password"
           label="password"
           type="password"
-          fullWidth
           variant="outlined"
           required
         />

@@ -1,7 +1,7 @@
 import axios from 'axios' 
 let accessToken = localStorage.getItem('accessToken')
 const instance = axios.create({
-  baseURL: 'http://api.localhost:8000',
+  baseURL: 'https://api.localhost',
   headers: {
     Authorization: 'Bearer ' + accessToken
   },

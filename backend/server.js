@@ -5,6 +5,17 @@ const App = express();
 const vhost = require("vhost");
 const cors = require("cors");
 
+const https = require('https');
+const fs = require('fs'); 
+let key = fs.readFileSync(__dirname + '/certs/selfsigned.key');
+let cert = fs.readFileSync(__dirname + '/certs/selfsigned.crt');
+
+ 
+let options = {
+  key,
+  cert
+};
+
 const frontend = require("./frontend");
 const backend = require("./backend");
 
@@ -18,13 +29,16 @@ App.use(
   })
 );
 
-App.use(vhost(HOSTNAME, frontend));
+App.use(vhost (HOSTNAME, frontend));
 App.use(vhost(`api.${HOSTNAME}`, backend));
 
+
+let server = https.createServer(options, App);
+
 require("./init-database")()
-  .then((msg) => {
+  .then((msg) => { 
     console.log(msg);
-    App.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log("Server is listening on port " + PORT);
     });
   })

@@ -1,5 +1,4 @@
 const tokenSigningKey = process.env.TOKEN_SIGNING_KEY
-console.log(tokenSigningKey)
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const Users = require('../models/Users')

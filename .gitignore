@@ -6,6 +6,8 @@
 .pnp
 .pnp.js
 
+/backend/cert
+
 # testing
 coverage
 

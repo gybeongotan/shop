@@ -21,6 +21,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import validator from "../tools/validator";
 import Api from "./Api";
+import ProfileIMGSampler from "./ProfileIMGSampler";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -32,6 +33,7 @@ function Profile() {
   let { userData, updateUserData } = useContext(UserContext);
   let [loading, setLoading] = useState(false);
   let submitBtn = useRef();
+  let [profileIMGSampler,setProfileIMGSampler] = useState(userData.profileIMG);
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -93,9 +95,10 @@ function Profile() {
 
   let updateIMG = ({ target }) => {
     if (target.value == "")
-      return (document.querySelectorAll("img")[1].src = userData.profileIMG);
-    document.querySelectorAll("img")[1].src = target.value;
+      return (setProfileIMGSampler( userData.profileIMG));
+    setProfileIMGSampler(target.value);
   };
+ 
 
   return mounted ? (
     <Box cx={{ width: "100%" }}>
@@ -193,11 +196,8 @@ function Profile() {
               severity="error"
             >
               {error}
-            </Alert>
-            <Avatar
-              sx={{ width: "10rem", height: "10rem", margin: " 1rem auto" }}
-              src={userData.profileIMG}
-            />
+            </Alert> 
+            <ProfileIMGSampler url={profileIMGSampler}/>
             <TextField
               margin="dense"
               name="profileIMG"

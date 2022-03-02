@@ -11,6 +11,7 @@ const userSchema = mongoose.Schema(
       required: true,
       lowercase: true,
       minLength: 1,
+      validate: /^[a-z]+$/
     },
     lastname: {
       immutable: true,
@@ -18,6 +19,7 @@ const userSchema = mongoose.Schema(
       required: true,
       lowercase: true,
       minLength: 1,
+      validate: /^[a-z]+$/
     },
     username: {
       immutable: true,
@@ -25,8 +27,10 @@ const userSchema = mongoose.Schema(
       required: true,
       unique: true,
       dropDups: true,
-      validate: /[A-z0-9]{5,10}/,
+      validate: /^[a-z]+[a-z0-9]*$/,
       lowercase: true,
+      maxLength: 7,
+      minLength: 5
     },
     password: {
       type: String,
@@ -52,7 +56,7 @@ const userSchema = mongoose.Schema(
     inbox: [
       { immutable: true, type: mongoose.Schema.Types.ObjectId, ref: 'Inboxes' },
     ],
-    profileIMG: { type: String, default: '/public/img/profile.png' },
+    profileIMG: { type: String, default: '/img/profile.png' },
     orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Orders' }],
   },
   {
