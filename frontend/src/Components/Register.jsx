@@ -147,6 +147,7 @@ function Register() {
               name="password"
               type="password"
               required
+              onInput={checkPassword}
               margin="dense"
               inputRef={pwdElement}
             />
