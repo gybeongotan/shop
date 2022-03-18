@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
-import Api from "./Api";
+import ApiModule from "./Api";
 import { useState, useRef } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import validate from "../tools/validator";
 import handBagImg from "../assets/local_mall_black_24dp.svg";
 import SubmitBtn from "./SubmitBtn";
 import { green } from "@mui/material/colors";
+import validator from "../tools/validator";
 import {
   Avatar,
   Box,
-  TextField,
   Container,
   Button,
   Alert,
@@ -17,7 +17,9 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { ArrowBack, ArrowRightSharp } from "@mui/icons-material";
+import InputText from "./InputText";
 function Register() {
+  const Api = ApiModule();
   let submitBtnStyle = {
     background: "black",
     color: "white",
@@ -26,46 +28,29 @@ function Register() {
     witdh: "3rem",
   };
 
-  let formElement = useRef(null);
-  let pwdElement = useRef(null);
-  let anotherPwdElement = useRef(null);
+  let formElement = useRef(null); 
   let [error, setError] = useState("");
-  let [success, setSuccess] = useState("");
-  let [pwdError, setPwdError] = useState(false);
-  let [pwdMatched, setPwdMatched] = useState(false);
-  let [userData,setUserData] = useState();
+  let [success, setSuccess] = useState(""); 
+  let [userData, setUserData] = useState();
 
   let [step, setStep] = useState(1);
   let navigate = useNavigate();
-
-  let checkPassword = () => {
-    let pass1 = pwdElement.current.value;
-    let pass2 = anotherPwdElement.current.value;
-    let matched = pass1 === pass2;
-    let longer = pass1.length < pass2.length;
-    let sameLength = pass1.length === pass2.length;
-
-    if (!matched && sameLength) return setPwdError(true);
-    if (longer) return setPwdError(true);
-    if (matched) setPwdMatched(true);
-    else setPwdMatched(false);
-    setPwdError(false);
-  };
+ 
   let nextStep = function () {
     let formValid = formElement.current.reportValidity();
-    if (!formValid) return;
-    if (!pwdMatched) return setPwdError(true);
+    if (!formValid) return; 
     setStep(2);
   };
   const [loading, setLoading] = useState(false);
 
   let submitHandler = function (e) {
+    if (step === 1) return;
     e.preventDefault();
     setLoading(true);
     let formData = new FormData(formElement.current);
     let data = {};
     formData.forEach((value, key) => (data[key] = value));
-    setUserData(data)
+    setUserData(data);
     Api.post("/user/registration", data)
       .then(successHandler)
       .catch(errorHandler);
@@ -75,13 +60,13 @@ function Register() {
     setSuccess(true);
   };
 
-  let errorHandler = (a) => { 
+  let errorHandler = (a) => {
     let error = a.response.data.error;
-    console.log(error)
+    console.log(error);
     setError(error);
     setLoading(false);
   };
-
+ 
   return success ? (
     <Alert severity="success">
       <AlertTitle>Success</AlertTitle>
@@ -106,7 +91,7 @@ function Register() {
           ref={formElement}
         >
           <Avatar src={handBagImg} sx={{ width: "10rem", height: "10rem" }} />
-          <h1>Local Shop</h1>
+          <h1>Shop App</h1>
           {error ? (
             <Alert severity="warning">
               <AlertTitle>Warning</AlertTitle>
@@ -124,49 +109,51 @@ function Register() {
               padding: "1rem",
             }}
           >
-            <TextField
+            <InputText
               label="firstname"
               name="firstname"
               required
               margin="dense"
+              lettersOnly
             />
-            <TextField
+            <InputText
               label="lastname"
               name="lastname"
-              required
+              required 
+              lettersOnly
               margin="dense"
             />
-            <TextField
+            <InputText
               label="username"
               name="username"
               required
               margin="dense"
+              inputProps={{
+                pattern: validator.username.pattern,
+                minLength: validator.username.minLength,
+                maxLength: validator.username.maxLength
+              }}
+              validationMessage={validator.username.msg}
+              onInvalid={(e)=>{console.log(e)}}
             />
-            <TextField
+            <InputText
               label="password"
               name="password"
               type="password"
-              required
-              onInput={checkPassword}
-              margin="dense"
-              inputRef={pwdElement}
-            />
-            <TextField
-              error={pwdError}
-              label="confirm password"
-              helperText={pwdError ? "Password doesn't matched" : ""}
-              name="cpassword"
-              type="password"
-              required
-              margin="dense"
-              onInput={checkPassword}
-              inputRef={anotherPwdElement}
-              color={pwdMatched ? "success" : "primary"}
+              required 
+              margin="dense" 
+              inputProps={{
+                pattern: validator.password.pattern,
+                minLength: validator.password.minLength,
+                maxLength: validator.password.maxLength
+              }}
+              validationMessage={validator.password.msg} 
             />
             <Button
               style={{ marginTop: "1rem" }}
               variant="contained"
               onClick={() => nextStep()}
+              type="submit"
             >
               Next <ArrowRightSharp />
             </Button>
@@ -186,7 +173,7 @@ function Register() {
                 padding: "1rem",
               }}
             >
-              <TextField
+              <InputText
                 label="phone number"
                 name="contact"
                 required
@@ -197,7 +184,7 @@ function Register() {
                 margin="dense"
                 helperText="+639xxxxxxxxx"
               />
-              <TextField
+              <InputText
                 multiline
                 label="address"
                 name="address"

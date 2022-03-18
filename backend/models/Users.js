@@ -37,7 +37,7 @@ const userSchema = mongoose.Schema(
       required: true,
       minLength: 7,
       maxLength: 14,
-      validate: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,30}$/,
+      validate: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{7,14}$/,
     },
     contact: { type: String, required: true, unique: true,
       validate: {
@@ -87,11 +87,13 @@ userSchema.statics.comparePassword = function (password, hashedPassword, cb) {
 }
 
 userSchema.statics.buildShop = function (userData) {
-  let tempShop = new Shops({
-    _id: ObjectId(userData.shop),
-    name: 'My Shop ' + userData.contact,
+  return new Promise((resolve,reject)=>{
+    let tempShop = new Shops({
+      _id: ObjectId(userData.shop),
+      name: 'My Shop ' + userData.contact,
+    })
+    tempShop.save(resolve).catch(reject)
   })
-  tempShop.save().catch(console.log)
 }
 
 function hashedPassword(password) {

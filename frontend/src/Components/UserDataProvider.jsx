@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import Api from "./Api";
+import ApiModule from "./Api";
 const { UserContext } = require("./UserContext");
 function UserData() {
+  const Api = ApiModule();
   let [userData, setUserData] = useState(null);
   let [fetched, setFetched] = useState(false);
   useEffect(() => { 

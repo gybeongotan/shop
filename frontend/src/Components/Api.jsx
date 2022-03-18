@@ -1,11 +1,12 @@
-import axios from 'axios' 
-let accessToken = localStorage.getItem('accessToken')
-const instance = axios.create({
-  baseURL: 'https://api.localhost',
-  headers: {
-    Authorization: 'Bearer ' + accessToken
-  },
-  withCredentials: true,
-})
- 
-export default instance
+import axios from "axios";
+function ApiModule() {
+  let accessToken = localStorage.getItem("accessToken");
+  return axios.create({
+    baseURL: "https://shop.localhost/api",
+    headers: {
+      Authorization: "Bearer " + accessToken,
+    },
+    withCredentials: true,
+  });
+}
+export default ApiModule;

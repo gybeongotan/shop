@@ -20,22 +20,26 @@ import React, { useEffect, useState, useContext, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import validator from "../tools/validator";
-import Api from "./Api";
+import ApiModule from "./Api";
 import ProfileIMGSampler from "./ProfileIMGSampler";
+import axios from "axios";
+import InputFile from "./InputFile";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function Profile() {
+  const Api = ApiModule();
   let [mounted, setMounted] = useState(false);
   let [error, setErrorMsg] = useState("");
-  let { userData, updateUserData } = useContext(UserContext);
   let [loading, setLoading] = useState(false);
+  let [selectedFile,setSelectedFile] = useState();
   let submitBtn = useRef();
-  let [profileIMGSampler,setProfileIMGSampler] = useState(userData.profileIMG);
+  let { userData, updateUserData } = useContext(UserContext);
+  let [profileIMGSampler, setProfileIMGSampler] = useState(userData.profileIMG);
   let navigate = useNavigate();
-
+  
   useEffect(() => {
     if (!userData) return navigate("/login");
     setMounted(true);
@@ -60,12 +64,13 @@ function Profile() {
   const handleSave = (event) => {
     if (loading) return Error();
     setLoading(true);
-    event.preventDefault();
-    let formData = document.querySelector("form");
+    event.preventDefault()
+    ;
+    let form = document.querySelector("form");
     let patch = {
-      profileIMG: formData.profileIMG.value,
-      contact: formData.contact.value,
-      address: formData.address.value,
+      profileIMG: form.profileIMG.value,
+      contact: form.contact.value,
+      address: form.address.value,
     };
 
     if (userData.contact === patch.contact || patch.contact === "")
@@ -79,26 +84,57 @@ function Profile() {
       handleClose();
       return;
     }
+   
+    let formData = new FormData();
 
-    Api.patch("/user/information", patch)
-      .then(() => {
-        let entries = Object.entries(patch);
+    if (selectedFile) {
+      let blob = new Blob([selectedFile], {
+        type: selectedFile.type,
+        name: selectedFile.name,
+      });
+      formData.append("profileIMG", blob);
+    }
+    if (patch?.contact) formData.append("contact", patch?.contact);
+    if (patch?.address) formData.append("address", patch?.address);
+    Api.patch("/user/information", formData)
+      .then(({data}) => { 
+        let entries = Object.entries(data.data);
         entries.forEach(([index, value]) => {
-          userData[index] = value;
+          userData[index] = value; 
         });
         updateUserData(userData);
         setLoading(false);
         setOpen(false);
       })
-      .catch(errorHandler);
+      .catch(errorHandler); 
   };
 
-  let updateIMG = ({ target }) => {
-    if (target.value == "")
-      return (setProfileIMGSampler( userData.profileIMG));
-    setProfileIMGSampler(target.value);
+  let updateIMG = (event) => { 
+
+      if(!event.target?.files){
+        setProfileIMGSampler(userData.profileIMG)
+        setSelectedFile()
+        return
+      } 
+    
+    setSelectedFile(event.target.files[0])
+
+    let url = URL.createObjectURL(event.target.files[0]);
+    setProfileIMGSampler(url);
+
+    // let formData = new FormData();
+    // let file = document.querySelector("input[type=file]");
+
+    // axios.post("https://shop.localhost/storage/images/profile", formData, {
+    //   onUploadProgress: function (progressEvent) {
+    //     var percentCompleted = Math.round(
+    //       (progressEvent.loaded * 100) / progressEvent.total
+    //     );
+    //     console.log(percentCompleted);
+    //   },
+    //   headers: { "Content-Type": "multipart/form-data" },
+    // });
   };
- 
 
   return mounted ? (
     <Box cx={{ width: "100%" }}>
@@ -138,7 +174,11 @@ function Profile() {
         </h2>
         <p style={{ marginTop: "5px" }}>{userData.contact}</p>
         <p className="address">{userData.address}</p>
-        <Button style={{marginTop: '2rem'}}variant="contained" onClick={handleClickOpen}>
+        <Button
+          style={{ marginTop: "2rem" }}
+          variant="contained"
+          onClick={handleClickOpen}
+        >
           Edit Info
         </Button>
         <Link style={{ textDecoration: "none" }} to="/logout">
@@ -196,18 +236,11 @@ function Profile() {
               severity="error"
             >
               {error}
-            </Alert> 
-            <ProfileIMGSampler url={profileIMGSampler}/>
-            <TextField
-              margin="dense"
-              name="profileIMG"
-              label="Image Link"
-              type="text"
-              fullWidth
-              variant="standard"
-              defaultValue={userData.profileIMG}
-              onChange={updateIMG}
-            />
+            </Alert>
+            <ProfileIMGSampler url={profileIMGSampler} /> 
+
+            <InputFile label="Change Profile" name="profileIMG" onChange={updateIMG}/>
+
             <TextField
               margin="dense"
               name="contact"

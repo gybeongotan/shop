@@ -18,9 +18,10 @@ router.post("/registration", (req, res) => {
     });
 });
 
-router.post("/login", async ({ patch }, res) => {
-  db.login(patch)
+router.post("/login",  (req, res) => {
+  db.login(req.patch)
     .then(({ accessToken, userData }) => {
+      req.session.userData =  userData; 
       res.status(200).send({ userData, accessToken });
     })
     .catch((error) => {
@@ -29,19 +30,20 @@ router.post("/login", async ({ patch }, res) => {
 });
 
 router.get("/information", (req, res) => {
-  db.getInfo(req.userData._id)
-    .then((result) => {
-      res.send(result);
+  db.getInfo(req.session.userData._id)
+    .then((userData) => { 
+      req.session.userData = Object.assign({},userData)
+      res.send(userData);
     })
     .catch((error) => {
-      res.status(500).send(error);
+      res.status(500).send({error: "not found"});
     });
 });
 
-router.patch("/information", ({ patch }, res) => {
-  db.updateInfo(patch)
-    .then((result) => {
-      res.send(result);
+router.patch("/information", (req, res) => {
+  db.updateInfo(req.patch)
+    .then(() => { 
+      res.send(req.patch); 
     })
     .catch((error) => {
       res.status(500).send(error);
@@ -49,7 +51,7 @@ router.patch("/information", ({ patch }, res) => {
 });
 
 router.get("/feed", async (req, res) => {
-  db.getFeed(req.userData._id)
+  db.getFeed(req.session.userData._id)
     .then((result) => {
       res.send(result);
     })
@@ -59,16 +61,10 @@ router.get("/feed", async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-  res.cookie(
-    "accessToken",
-    { data: "deleted" },
-    {
-      sameSite: "none",
-      secure: true,
-      maxAge: -10, //10days
-    }
-  );
-  res.sendStatus(200);
+ req.session.destroy((err)=>{
+   if (err) return res.status(500).send(err)
+   res.sendStatus(200);
+ })
 });
 
 module.exports = router;

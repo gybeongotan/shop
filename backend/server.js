@@ -4,20 +4,21 @@ const express = require("express");
 const App = express();
 const vhost = require("vhost");
 const cors = require("cors");
+const sessions = require("express-session");
+const https = require("https");
+const http = require("http");
+const fs = require("fs");
+let key = fs.readFileSync(__dirname + "/certs/selfsigned.key");
+let cert = fs.readFileSync(__dirname + "/certs/selfsigned.crt");
 
-const https = require('https');
-const fs = require('fs'); 
-let key = fs.readFileSync(__dirname + '/certs/selfsigned.key');
-let cert = fs.readFileSync(__dirname + '/certs/selfsigned.crt');
-
- 
 let options = {
   key,
-  cert
+  cert,
 };
 
 const frontend = require("./frontend");
 const backend = require("./backend");
+const storage = require("./routes/storage");
 
 const PORT = process.env.PORT || 4000;
 const HOSTNAME = process.env.HOSTNAME;
@@ -28,18 +29,35 @@ App.use(
     credentials: true,
   })
 );
-
-App.use(vhost (HOSTNAME, frontend));
-App.use(vhost(`api.${HOSTNAME}`, backend));
-
-
-let server = https.createServer(options, App);
-
-require("./init-database")()
-  .then((msg) => { 
-    console.log(msg);
-    server.listen(PORT, () => {
-      console.log("Server is listening on port " + PORT);
-    });
+const oneDay = 1000 * 60 * 60 * 24;
+App.use(
+  sessions({
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    saveUninitialized: true,
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      sameSite: "none",
+      maxAge: oneDay,
+    },
+    resave: false,
   })
-  .catch(console.log);
+);
+App.use("/api", backend);
+App.use("/storage", storage);
+App.use("/", frontend);
+
+async function startServer() {
+  let server =
+    process.env.NODE_ENV === "development"
+      ? https.createServer(options, App)
+      : http.createServer(App);
+  let [success, error] = await require("./init-database")();
+  if (error) console.log(error);
+  else
+    server.listen(PORT, () => {
+      console.log("Server is running on port " + PORT);
+    });
+}
+
+startServer();

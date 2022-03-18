@@ -13,9 +13,13 @@ export default function LabelBottomNavigation({changePathTo} ) {
     setValue(newValue); 
     changePathTo(newValue)
   };
+  
+  React.useEffect(()=>{
+    setValue(window.location.pathname)
+  },[])
 
   return (
-    <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+    <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0,maxWidth: 'inherit' }} elevation={3}>
     <BottomNavigation  sx={{width: "90%",margin:"auto"}} value={value} onChange={handleChange}> 
       <BottomNavigationAction
         label="Orders"
@@ -24,7 +28,7 @@ export default function LabelBottomNavigation({changePathTo} ) {
           fontSize='medium'/>}
       /> 
        <BottomNavigationAction
-        label="Shop"
+        label="My Shop"
         value="/shop"
         icon={<StoreIcon 
         fontSize='medium'/>}

@@ -1,30 +1,29 @@
 
-POST http://api.localhost:8000/user/registration
+POST https://fresh-thinker-344120.df.r.appspot.com/api/user/registration
 Content-Type: application/json
 
 {   
-    "username": "us2er0112",
-    "password": "Abc12345",
+    "username": "andress",
+    "password": "1@Upper",
     "firstname": "juan",
-    "lastname": "Dela Cruz",
+    "lastname": "DelaCruz",
     "address": "juan@email.com",
-    "contact": "099933201456"
+    "contact": "+639777060593"
 
 }
 
 ###
-POST http://localhost:8000/api/user/login
+POST https://fresh-thinker-344120.df.r.appspot.com/api/user/login
 Content-Type: application/json
 
 {
-  "username": "us2er0112",
-  "password": "Abc12345"
+  "username": "andress",
+  "password": "1@Upper"
 }
 
 ###
-GET http://localhost:8000/api/user/information 
-Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTEzNWZmNjEwYzdjMzI2ZGZiYzc3NWYiLCJkZXZpY2UiOiJ2c2NvZGUtcmVzdGNsaWVudCIsImlhdCI6MTYzOTgyODExMX0.nEKcxb2DtH5iKWnN2r0nwmOxqpuJFrjcO2S2Af0XQ3w
-
+GET https://fresh-thinker-344120.df.r.appspot.com/api/user/information 
+Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjMwYmM3YjUzZTNhZTAwMGFhNGY5MjMiLCJkZXZpY2UiOiJ2c2NvZGUtcmVzdGNsaWVudCIsInNob3AiOiI2MjMwYmM3YjUzZTNhZTAwMGFhNGY5MjQiLCJpYXQiOjE2NDczNjE2NDR9.IitXoQrTajyynFUjK4q7kwDPalTWwPBV12ZL10x0_gk"
 
 ###
 PATCH http://localhost:8000/api/user/information 
