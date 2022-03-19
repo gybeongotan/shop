@@ -121,19 +121,7 @@ function Profile() {
 
     let url = URL.createObjectURL(event.target.files[0]);
     setProfileIMGSampler(url);
-
-    // let formData = new FormData();
-    // let file = document.querySelector("input[type=file]");
-
-    // axios.post("https://shop.localhost/storage/images/profile", formData, {
-    //   onUploadProgress: function (progressEvent) {
-    //     var percentCompleted = Math.round(
-    //       (progressEvent.loaded * 100) / progressEvent.total
-    //     );
-    //     console.log(percentCompleted);
-    //   },
-    //   headers: { "Content-Type": "multipart/form-data" },
-    // });
+ 
   };
 
   return mounted ? (

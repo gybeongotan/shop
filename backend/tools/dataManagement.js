@@ -39,7 +39,6 @@ router.patch(
       try {
         let link = new URL(req.session.userData.profileIMG);
         link = link.pathname.split("/web-merch.appspot.com/")[1];
-        console.log(link);
         await storage.bucket("web-merch.appspot.com").file(link).delete();
       } catch (error) {
         console.log(error)

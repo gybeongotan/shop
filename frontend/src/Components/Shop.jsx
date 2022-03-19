@@ -10,7 +10,7 @@ import ImageListItemBar from "@mui/material/ImageListItemBar";
 import ListSubheader from "@mui/material/ListSubheader";
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from "@mui/icons-material/Info";
-import ShopBuilder from "./ShopBuidler";
+import ShopBuilder from "./ShopBuilder";
 const Shop = () => {
   const Api = ApiModule();
   let [isLoading, setLoading] = useState(true),

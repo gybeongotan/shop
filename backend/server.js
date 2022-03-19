@@ -8,8 +8,8 @@ const sessions = require("express-session");
 const https = require("https");
 const http = require("http");
 const fs = require("fs");
-let key = fs.readFileSync(__dirname + "/certs/selfsigned.key");
-let cert = fs.readFileSync(__dirname + "/certs/selfsigned.crt");
+let key = fs.readFileSync(__dirname + "/certs/key.pem");
+let cert = fs.readFileSync(__dirname + "/certs/cert.pem");
 
 let options = {
   key,
@@ -18,7 +18,6 @@ let options = {
 
 const frontend = require("./frontend");
 const backend = require("./backend");
-const storage = require("./routes/storage");
 
 const PORT = process.env.PORT || 4000;
 const HOSTNAME = process.env.HOSTNAME;
@@ -44,7 +43,6 @@ App.use(
   })
 );
 App.use("/api", backend);
-App.use("/storage", storage);
 App.use("/", frontend);
 
 async function startServer() {
