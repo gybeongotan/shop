@@ -1,12 +1,13 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/backend/node_modules
-/frontend/node_modules 
+node_modules/
 .pnp
 .pnp.js
-
-/backend/cert
+certs/
+app.yaml
+web-merch-f2ac63b49161.json 
+.env
 
 # testing
 coverage
@@ -25,3 +26,6 @@ build
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+backend/certs/cert.pem
+openssl/openssl.cfg
+openssl/openssl.exe
