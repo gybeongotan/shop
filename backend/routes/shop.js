@@ -7,7 +7,8 @@ const Products = require("../models/Products");
 const router = express.Router();
 
 router.get("/info", (req, res) => {
-  let shopId = mongoose.mongo.ObjectId(req.userData.shop);
+  console.log(req.session.userData)
+  let shopId = mongoose.mongo.ObjectId(req.session.userData.shop);
   Shops.findById(shopId)
     .then((data) => {
     if(!data) throw Error();
@@ -17,7 +18,7 @@ router.get("/info", (req, res) => {
 });
 
 router.patch("/info", (req, res) => {
-  let id = req.userData.shop;
+  let id = req.session.userData.shop;
   let patch = req.body;
   Shops.findByIdAndUpdate(id, patch)
     .then((data) => {

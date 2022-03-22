@@ -17,8 +17,20 @@ import Logout from "./Components/Logout";
 import UserDataProvider from "./Components/UserDataProvider";
 import EditShop from "./Components/EditShop";
 import { Box } from "@mui/material";
+
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#000000",
+    },
+  },
+});
 function App() {
   return (
+    <ThemeProvider theme={theme}>
+
     <Box sx={{ width: "100%", height: "100%", overflow: "hidden" }}>
       <Router> 
           <Routes>
@@ -41,6 +53,7 @@ function App() {
           </Routes> 
       </Router>
     </Box>
+    </ThemeProvider>
   );
 }
 

@@ -24,7 +24,7 @@ const HOSTNAME = process.env.HOSTNAME;
 
 App.use(
   cors({
-    origin: "http://shop.localhost:3000",
+    origin: true,
     credentials: true,
   })
 );

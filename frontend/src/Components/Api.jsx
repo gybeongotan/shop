@@ -2,7 +2,7 @@ import axios from "axios";
 function ApiModule() {
   let accessToken = localStorage.getItem("accessToken");
   return axios.create({
-    baseURL: "/api",
+    baseURL: "https://localhost/api",
     headers: {
       Authorization: "Bearer " + accessToken,
     },

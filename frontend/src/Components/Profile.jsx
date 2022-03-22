@@ -30,16 +30,34 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function Profile() {
+  const style = {
+    appBar: {
+      padding: "10px",
+      background: "white",
+      color: "black",
+      position: "static",
+    },
+    main: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column",
+      padding: "10vw",
+    },
+    avatar: { width: "12.1rem", height: "12rem" },
+    appBarEdit: { position: "relative"},
+    logout:{ textDecoration: "none" , }
+  };
   const Api = ApiModule();
   let [mounted, setMounted] = useState(false);
   let [error, setErrorMsg] = useState("");
   let [loading, setLoading] = useState(false);
-  let [selectedFile,setSelectedFile] = useState();
+  let [selectedFile, setSelectedFile] = useState();
   let submitBtn = useRef();
   let { userData, updateUserData } = useContext(UserContext);
   let [profileIMGSampler, setProfileIMGSampler] = useState(userData.profileIMG);
   let navigate = useNavigate();
-  
+
   useEffect(() => {
     if (!userData) return navigate("/login");
     setMounted(true);
@@ -64,8 +82,7 @@ function Profile() {
   const handleSave = (event) => {
     if (loading) return Error();
     setLoading(true);
-    event.preventDefault()
-    ;
+    event.preventDefault();
     let form = document.querySelector("form");
     let patch = {
       profileIMG: form.profileIMG.value,
@@ -84,7 +101,7 @@ function Profile() {
       handleClose();
       return;
     }
-   
+
     let formData = new FormData();
 
     if (selectedFile) {
@@ -97,60 +114,41 @@ function Profile() {
     if (patch?.contact) formData.append("contact", patch?.contact);
     if (patch?.address) formData.append("address", patch?.address);
     Api.patch("/user/information", formData)
-      .then(({data}) => { 
+      .then(({ data }) => {
         let entries = Object.entries(data.data);
         entries.forEach(([index, value]) => {
-          userData[index] = value; 
+          userData[index] = value;
         });
+        userData.profileIMG = profileIMGSampler;
         updateUserData(userData);
         setLoading(false);
         setOpen(false);
       })
-      .catch(errorHandler); 
+      .catch(errorHandler);
   };
 
-  let updateIMG = (event) => { 
+  let updateIMG = (event) => {
+    if (!event.target?.files) {
+      setProfileIMGSampler(userData.profileIMG);
+      setSelectedFile();
+      return;
+    }
 
-      if(!event.target?.files){
-        setProfileIMGSampler(userData.profileIMG)
-        setSelectedFile()
-        return
-      } 
-    
-    setSelectedFile(event.target.files[0])
+    setSelectedFile(event.target.files[0]);
 
     let url = URL.createObjectURL(event.target.files[0]);
     setProfileIMGSampler(url);
- 
   };
 
   return mounted ? (
     <Box cx={{ width: "100%" }}>
-      <AppBar
-        sx={{
-          padding: "10px",
-          background: "white",
-          color: "black",
-          position: "static",
-        }}
-      >
+      <AppBar sx={style.appBar}>
         <Typography variant="h6" color="inherit" component="div">
           Profile
         </Typography>
       </AppBar>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          padding: "10vw",
-        }}
-      >
-        <Avatar
-          sx={{ width: "12.1rem", height: "12rem" }}
-          src={userData.profileIMG}
-        ></Avatar>
+      <Box sx={style.main}>
+        <Avatar sx={style.avatar} src={userData.profileIMG}></Avatar>
         <h2
           style={{
             marginTop: "4rem",
@@ -169,8 +167,8 @@ function Profile() {
         >
           Edit Info
         </Button>
-        <Link style={{ textDecoration: "none" }} to="/logout">
-          <Button variant="text">Log-out</Button>
+        <Link style={style.logout} to="/logout">
+          <Button sx={style.logout}variant="text">Log-out</Button>
         </Link>
       </Box>
 
@@ -180,7 +178,7 @@ function Profile() {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: "relative" }}>
+        <AppBar sx={style.appBarEdit}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -225,9 +223,13 @@ function Profile() {
             >
               {error}
             </Alert>
-            <ProfileIMGSampler url={profileIMGSampler} /> 
+            <ProfileIMGSampler url={profileIMGSampler} />
 
-            <InputFile label="Change Profile" name="profileIMG" onChange={updateIMG}/>
+            <InputFile
+              label="Change Profile"
+              name="profileIMG"
+              onChange={updateIMG}
+            />
 
             <TextField
               margin="dense"
