@@ -45,8 +45,15 @@ function Profile() {
       padding: "10vw",
     },
     avatar: { width: "12.1rem", height: "12rem" },
-    appBarEdit: { position: "relative"},
-    logout:{ textDecoration: "none" , }
+    appBarEdit: { position: "relative" },
+    logout: { textDecoration: "none" },
+    editProfileForm: {
+      display: "flex",
+      alignItems: "center",
+      flexDirection: "column",
+      alignContent: "center",
+      width: "100%",
+    },
   };
   const Api = ApiModule();
   let [mounted, setMounted] = useState(false);
@@ -168,7 +175,9 @@ function Profile() {
           Edit Info
         </Button>
         <Link style={style.logout} to="/logout">
-          <Button sx={style.logout}variant="text">Log-out</Button>
+          <Button sx={style.logout} variant="text">
+            Log-out
+          </Button>
         </Link>
       </Box>
 
@@ -216,7 +225,12 @@ function Profile() {
         </AppBar>
 
         <DialogContent>
-          <Box component="form" action="#" onSubmit={handleSave}>
+          <Box
+            component="form"
+            style={style.editProfileForm}
+            action="#"
+            onSubmit={handleSave}
+          >
             <Alert
               style={{ display: error ? "block" : "none" }}
               severity="error"
