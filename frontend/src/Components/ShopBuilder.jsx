@@ -2,6 +2,7 @@ import { AppBar, Box, Typography } from "@mui/material";
 
 export default function ShopBuilder (){
     return ( 
+      <>
         <AppBar
           sx={{
             padding: "10px",
@@ -20,5 +21,9 @@ export default function ShopBuilder (){
             Shop Builder
           </Typography>
         </AppBar>
+          <Box>
+            You don't have a shop yet
+          </Box>
+          </>
         )
 }
